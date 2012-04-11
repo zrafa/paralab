@@ -1,0 +1,34 @@
+#!/usr/bin/perl -n
+#127 tor_MPI_Allreduce_pos caller=4294954192 rank=3 dest=-1 count=1 size=8
+# prog,time,call,caller,rank,dest,count,size
+BEGIN { $callsite= 1000; }
+if(/(\d+) tor_MPI_(\S+) caller=(\d+) rank=(\d+) dest=(\S+) count=(\d+) size=(\d+)/) {
+	next unless ($4 == 0);
+	($call, $pos) = split ("_", $2);
+	$call = "CPU" if ($pos eq "pre");
+	#print "$call $pos\n";
+	if(!defined $cs->{$3}) { 
+		$cs->{$3} = $callsite++;
+	}  
+	$caller = $callsite;
+	$dest=$5;
+	$count=$6;
+	$size=$7;
+	$time=$1;
+	#print "$1 $2 $3 $4 $5 $6 $7\n";
+	print "$call:$caller:$dest:$count:$size:$time\n";
+}
+__END__
+
+	if($scall =~ m/_pre/) {
+		$scall = "CPU";
+	} else {
+		$scall =~ s/_pos//;
+	}
+	$caller = $s[3];
+	$dest = $s[5];
+	$count = $s[6];
+	$size = $s[7];	
+	$time = $s[1];
+	print "$scall:$caller:$dest:$count:$size:$time\n";
+}

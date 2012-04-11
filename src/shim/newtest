@@ -1,0 +1,32 @@
+#!/bin/bash -x
+
+BINDIR=/home/oso/Desktop/SHIM/shim/NPB3.3.1/NPB3.3-MPI/bin
+LIBDIR=~/lib
+PRELOAD="$LIBDIR/shim.so $LIBDIR/libunwind.so.7"
+MACHINES=~/machines
+MPIRUN=/usr/lib64/openmpi/1.4-gcc/bin/mpirun
+
+# para cada problema del benchmark
+for PROG in bt cg ft is lu mg sp ep 
+do
+        # para cada tamaño de problema
+        for CLASS in A 
+        do
+                for PROCS in 4 
+                do
+                        PROGNAME=$PROG.$CLASS.$PROCS
+                        OUTFILE=$PROGNAME.out
+                        PROGDIR=$PROGNAME.dir
+                        mkdir -p $PROGDIR
+                        cd $PROGDIR
+			LD_PRELOAD="$PRELOAD" \
+					 $MPIRUN -x LD_PRELOAD \
+					--mca btl ^openib,udapl \
+					-machinefile $MACHINES \
+                                        -output-filename $PROGNAME \
+					-np $PROCS $BINDIR/$PROGNAME
+                        cd ..
+                done
+        done
+done
+

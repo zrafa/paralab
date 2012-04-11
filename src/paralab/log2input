@@ -1,0 +1,47 @@
+#!/usr/bin/perl -n
+# Oso 14/02/2012
+# Parte de los archivos de log dejados por SHIM
+# (lineas de callback intermixed con output de la aplicacion)
+# prog,time,call,caller,rank,dest,count,size
+#
+# Contempla los tipos de registros:
+#127 tor_MPI_XXXXX_pos caller=4294954192 rank=3 dest=-1 count=1 size=8
+#97 tor_MPI_Barrier_pos caller=4294955694 rank=0
+#1865 tor_MPI_Waitall_pos caller=15053 rank=-1 dest=-1 count=-1 size=-1
+#
+BEGIN { $nextcallsite= 1001; }
+if(/(\d+) tor_MPI_(\S+) caller=(\d+) rank=(-*\d+) dest=(\S+) count=(-*\d+) size=(-*\d+)/ ||
+   /(\d+) tor_MPI_(\S+) caller=(\d+) rank=(-*\d+)/) {
+	# Solo interesa proceso 0
+
+	$time=$1;
+
+	# Determinar CALL y PRE/POS
+	($call, $pos) = split ("_", $2);
+	$newcall = $call;
+	$newcall = "CPU" if ($pos eq "pre");
+	$rank = $4;
+
+	#print "call $call, rank $rank\n";
+	if($call =~ /Wait/) {
+        $rank = 0;
+    }
+	next unless ($rank == 0);
+
+	# Computar el CALLSITE
+	$caller = $3;
+	$cs->{$caller} = $nextcallsite++ unless defined $cs->{$caller};
+	$callsite = $cs->{$caller};
+
+	$size = 0;
+	$dest=-1;
+	$count=-1;
+	if($call ne "Barrier" && !($call =~ /Wait/)) {
+		$dest=$5;
+		$count=$6;
+		$size=$7 unless ($pos eq "pre"); # SIZE = 0 si PRE
+	}
+
+	#print "$1 $2 $3 $4 $5 $6 $7\n";
+	print "$newcall:$callsite:$dest:$count:$size:$time\n";
+}
