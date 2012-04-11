@@ -1,0 +1,43 @@
+PARALAB
+=======
+
+Description: paralab is a framework for black-box analysis of MPI
+programs. paralab allows you to investigate communcation patterns,
+performance issues and algorithmic features of binary MPI programs,
+without any source code.
+
+Depends: libunwind
+
+Tags: performance analysis, MPI, parallel programming, distributed memory
+
+http://hpc.uncoma.edu.ar
+
+
+El proyecto paralab permite identificar la estructura de las comunicaciones
+efectuadas por un programa que utiliza MPI (Message Passing Interface),
+con el fin de analizar patrones de comunicacion, problemas de rendimiento y
+estructura de los programas MPI.
+Para tal fin, el proyecto provee -actualmente- dos componentes :
+una biblioteca llamada SHIM, y una herramienta de analisis llamada PARALAB.
+
+SHIM es una biblioteca compartida, que se utiliza para obtener la traza
+de ejecución de un programa que utiliza MPI (Message Passing Interface)
+Puede ser cargada con LD_PRELOAD al momento de ejecutar programas que
+utilizan bibliotecas OpenMPI
+
+PARALAB es una herramienta de analisis de las trazas generadas con SHIM.
+Permite obtener o identificar la estructura de las comunicaciones.
+
+
+Compilacion (Compiling)
+-----------------------
+
+	cd src/
+	make clean
+	make all
+
+La nueva librería shim.so estará bajo src/shim/, y paralab
+en src/paralab/
+
+
+
