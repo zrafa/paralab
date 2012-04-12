@@ -10,8 +10,12 @@ Depends: libunwind
 
 Tags: performance analysis, MPI, parallel programming, distributed memory
 
-http://hpc.uncoma.edu.ar
+This program is free software, and part of http://hpc.uncoma.edu.ar
+PARALAB Home Page : http://sourceforge.net/p/paralab/wiki/PARALAB%20Home%20Page/
 
+
+ES
+--
 
 El proyecto paralab permite identificar la estructura de las comunicaciones
 efectuadas por un programa que utiliza MPI (Message Passing Interface),
