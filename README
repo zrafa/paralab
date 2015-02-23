@@ -2,7 +2,7 @@ PARALAB
 =======
 
 Description: paralab is a framework for black-box analysis of MPI
-programs. paralab allows you to investigate communcation patterns,
+programs. paralab allows you to investigate communication patterns,
 performance issues and algorithmic features of binary MPI programs,
 without any source code.
 
@@ -21,6 +21,7 @@ El proyecto paralab permite identificar la estructura de las comunicaciones
 efectuadas por un programa que utiliza MPI (Message Passing Interface),
 con el fin de analizar patrones de comunicacion, problemas de rendimiento y
 estructura de los programas MPI.
+
 Para tal fin, el proyecto provee -actualmente- dos componentes :
 una biblioteca llamada SHIM, y una herramienta de analisis llamada PARALAB.
 
@@ -40,7 +41,7 @@ Compilacion (Compiling)
 	make clean
 	make all
 
-La nueva librería shim.so estará bajo src/shim/, y paralab
+La nueva biblioteca shim.so estará bajo src/shim/, y paralab
 en src/paralab/
 
 
